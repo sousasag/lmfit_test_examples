@@ -194,13 +194,17 @@ def test_4synthlines_with_ngaussians_constrains():
   x = np.linspace(5800, 5803, num=500)
   y = gaussian(x, -0.8, 5801.1, 0.2) + gaussian(x, -0.5, 5802.2, 0.2) + \
       gaussian(x, -0.3, 5801.7, 0.2) + gaussian(x, -0.2, 5802.7, 0.2) + \
-      np.random.normal(0, 0.01, x.shape[0])
+      np.random.normal(0, 0.25, x.shape[0])
 
   params = [-0.9, 5801, 0.1, -0.4, 5802, 0.1,-0.4, 5801.5, 0.1, -0.1, 5802.8, 0.1]
   constrains = [(-1.,-0.1), (5800.8,5801.2), (0.05,0.3),(-1,-0.1), (5801.8,5802.2), (0.05,0.3),
                 (-1.,-0.1), (5801.3,5801.8), (0.05,0.3),(-1,-0.1), (5802.6,5803), (0.05,0.3),]
+  constrains = [(-2.,0.1), (5800.8,5801.2), (0.05,0.3),(-2,0.1), (5801.8,5802.2), (0.05,0.3),
+                (-2.,0.1), (5801.3,5801.8), (0.05,0.3),(-2,0.1), (5802.6,5803), (0.05,0.3),]
+  constrains = [(-2.,0.1), (5800,5802), (0.05,0.3),(-2,0.1), (5801,5802.5), (0.05,0.3),
+                (-2.,0.1), (5801,5802), (0.05,0.3),(-2,0.1), (5802,5803.5), (0.05,0.3),]
 
-  mod, out, init = lmfit_ngauss(x,y, params, constrains)
+  mod, out, init = lmfit_ngauss_constrains(x,y, params, constrains)
 
   
   plt.plot(x, y)
@@ -265,7 +269,7 @@ def test_example_2_Gaussians_1_exp():
   pars = exp_mod.guess(y, x=x)
 
   gauss1  = GaussianModel(prefix='g1_')
-  pars.update( gauss1.make_params())
+  pars.update(gauss1.make_params())
 
   pars['g1_center'].set(105, min=75, max=125)
   pars['g1_sigma'].set(15, min=3)
@@ -298,7 +302,7 @@ def test_example_2_Gaussians_1_exp():
 #-------------------------------------------------
 
 ## -> https://lmfit.github.io/lmfit-py/builtin_models.html#example-3-fitting-multiple-peaks-and-using-prefixes
-test_example_2_Gaussians_1_exp()
+#test_example_2_Gaussians_1_exp()
 
 
 #test_2gaussians()
@@ -314,7 +318,7 @@ test_example_2_Gaussians_1_exp()
 #test_4synthlines_with_ngaussians_atone()
 
 #With constrains it works every time (never saw a bad fit)
-#test_4synthlines_with_ngaussians_constrains()
+test_4synthlines_with_ngaussians_constrains()
 
 
 
